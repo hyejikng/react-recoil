@@ -40,6 +40,7 @@ interface IForm {
   Password: string;
   Password1: string;
   Username: string;
+  extraErrors: string;
 }
 
 function Todolist() {
@@ -47,13 +48,21 @@ function Todolist() {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<IForm>({
     defaultValues: {
       email: '@naver.com',
     },
   });
-  const onValid = (data: any) => {
-    console.log(data);
+  const onValid = (data: IForm) => {
+    if (data.Password !== data.Password1) {
+      setError(
+        'Password1',
+        { message: 'Password should be the same.' },
+        { shouldFocus: true } // 에러가 발생한 input을 Focus해주는 코드.
+      );
+    }
+    // setError('extraErrors', { message: 'Server Offline' });
   };
   console.log(errors);
   //   console.log(useForm());
@@ -72,17 +81,28 @@ function Todolist() {
       />
       <span>{errors?.email?.message}</span>
       <input
-        {...register('FirstName', { required: true })}
+        {...register('FirstName', {
+          required: true,
+          //   validate: (value) => !value.includes('Coco'),
+          validate: {
+            noCoco: (value) =>
+              value.includes('Coco') ? 'no Coco allowed' : true,
+            noGigi: (value) =>
+              value.includes('Gigi') ? 'no Coco allowed' : true,
+          },
+        })}
         placeholder="First Name"
       />
       <span>{errors?.FirstName?.message}</span>
       <input
-        {...register('LastName', { required: true })}
+        {...register('LastName', {
+          required: true,
+        })}
         placeholder="Last Name"
       />
       <span>{errors?.LastName?.message}</span>
       <input
-        {...register('Username', { required: true, minLength: 6 })}
+        {...register('Username', { required: true, minLength: 4 })}
         placeholder="Username"
       />
       <span>{errors?.Username?.message}</span>
@@ -96,9 +116,9 @@ function Todolist() {
       <span>{errors?.Password?.message}</span>
       <input
         {...register('Password1', {
-          required: 'Password is required',
+          required: 'Repeat your password',
           minLength: {
-            value: 5,
+            value: 9,
             message: 'Your password is too short.',
           },
         })}
@@ -106,6 +126,8 @@ function Todolist() {
       />
       <span>{errors?.Password1?.message}</span>
       <button>Add</button>
+      {/* <span>{errors?.extraErrors?.message}</span> */}
+      {/* error가 있으면 -> extraErrors -> message전달까지, error가 있지만 extraErrors가 아니면 message x 즉, 물음표를 붙이는게 중요하다. */}
     </form>
   );
 }

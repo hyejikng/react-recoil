@@ -1,4 +1,6 @@
-import { atom } from 'recoil';
+//atoms.tsx
+
+import { atom, selector } from 'recoil';
 
 export interface IToDo {
   text: string;
@@ -9,4 +11,16 @@ export interface IToDo {
 export const toDoState = atom<IToDo[]>({
   key: 'toDoList',
   default: [], //기본 default값을 빈 배열로 설정. list로 정리할 것이므로.
+});
+
+export const toDoSelector = selector({
+  key: 'selector',
+  get: ({ get }) => {
+    const toDos = get(toDoState);
+    return [
+      toDos.filter((todo) => todo.category === 'TO_DO'),
+      toDos.filter((todo) => todo.category === 'DOING'),
+      toDos.filter((todo) => todo.category === 'DONE'),
+    ];
+  },
 });

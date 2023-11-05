@@ -14,6 +14,7 @@ function ToDo({ text, category, id }: IToDo) {
       const newToDo = { text, id, category: name as any };
       const newToDos = [...prevToDos];
       newToDos.splice(targetIndex, 1, newToDo);
+      console.log(newToDos);
       return newToDos;
     });
   };

@@ -26,7 +26,6 @@ export const toDoSelector = selector({
   get: ({ get }) => {
     const toDos = get(toDoState);
     const category = get(categoryState);
-    if (category === 'TO_DO')
-      return toDos.filter((todo) => todo.category === 'TO_DO');
+    return toDos.filter((todo) => todo.category === category);
   },
 });

@@ -2,18 +2,23 @@
 
 import { atom, selector } from 'recoil';
 
-type categories = 'TO_DO' | 'DOING' | 'DONE';
+// type categories = 'TO_DO' | 'DOING' | 'DONE';
+export enum Categories {
+  'TO_DO' = 'TO_DO',
+  'DOING' = 'DOING',
+  'DONE' = 'DONE',
+}
 
 export interface IToDo {
   text: string;
   id: number;
   //category: 'TO_DO' | 'DOING' | 'DONE'; //아무 string을 받는게 아니라고 제한을 만들어주는 역할.
-  category: categories;
+  category: Categories;
 }
 
-export const categoryState = atom<categories>({
+export const categoryState = atom<Categories>({
   key: 'category',
-  default: 'TO_DO',
+  default: Categories.TO_DO,
 });
 
 export const toDoState = atom<IToDo[]>({

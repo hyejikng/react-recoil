@@ -1,6 +1,12 @@
 //atoms.tsx
 
 import { atom, selector } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+
+const { persistAtom } = recoilPersist({
+  key: 'todoLocal',
+  storage: localStorage,
+});
 
 // type categories = 'TO_DO' | 'DOING' | 'DONE';
 export enum Categories {
@@ -8,7 +14,6 @@ export enum Categories {
   'DOING' = 'DOING',
   'DONE' = 'DONE',
 }
-
 export interface IToDo {
   text: string;
   id: number;
@@ -24,6 +29,7 @@ export const categoryState = atom<Categories>({
 export const toDoState = atom<IToDo[]>({
   key: 'toDoList',
   default: [], //기본 default값을 빈 배열로 설정. list로 정리할 것이므로.
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const toDoSelector = selector({

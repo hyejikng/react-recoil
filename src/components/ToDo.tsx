@@ -15,15 +15,13 @@ function ToDo({ text, category, id }: IToDo) {
       const newToDos = [...prevToDos];
       newToDos.splice(targetIndex, 1, newToDo);
       console.log(newToDos);
-
       return newToDos;
     });
   };
-  const onDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onDelete = () => {
     setToDos((myToDo) => {
-      return myToDo.filter(
-        (toDo) => toDo.id !== Number(event.currentTarget.id)
-      );
+      const newMyToDos = myToDo.filter((toDo) => toDo.id !== id);
+      return newMyToDos;
     });
   };
   return (
